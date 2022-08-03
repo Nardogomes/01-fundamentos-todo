@@ -67,6 +67,10 @@
   font-weight: 700;
 }
 
+.contentTask + .contentTask {
+  margin-top: 1rem;
+}
+
 .contentTask button {
   background: transparent;
   border: 0;
@@ -80,4 +84,10 @@
 
 .contentTask button:hover {
   color: var(--red-500);
+}
+
+.contentTaskEmpty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
