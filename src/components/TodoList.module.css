@@ -44,6 +44,24 @@
   flex-direction: column;
 }
 
+.content header {
+  color: var(--gray-200);
+  margin: 2rem 0;
+
+  display: flex;
+  justify-content: space-between;
+}
+
+.content header span {
+  display: inline-block;
+  width: 3rem;
+  text-align: center;
+  margin-left: 1rem;
+  border-radius: 8px;
+  color: #fff;
+  background-color: var(--blue-600);
+}
+
 .contentTask {
   background-color: var(--gray-400);
   padding: 0.625rem;
@@ -87,7 +105,14 @@
 }
 
 .contentTaskEmpty {
+  color: var(--gray-200);
+  font-size: 1.5rem;
+
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.contentTaskEmpty p {
+  margin-top: 1rem;
 }

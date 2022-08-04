@@ -16,6 +16,14 @@ export function TodoList() {
     setNewTask(event.target.value);
   }
 
+  function deleteTask(taskToDelete: string) {
+    const tasksWithoutDeleteOne = listTasks.filter(task => {
+      return task !== taskToDelete;
+    });
+
+    setListTasks(tasksWithoutDeleteOne);
+  }
+
   return (
     <div className={styles.container}>
       <div className={styles.newTask}>
@@ -28,6 +36,10 @@ export function TodoList() {
       </div>
 
       <div className={styles.content}>
+        <header>
+          <p>Total de tarefas<span>{listTasks.length}</span></p>
+          <p>Tarefas realizadas<span>{` 2 / ${listTasks.length}`}</span></p>
+        </header>
         {listTasks.length !== 0 ? listTasks.map((task, index) => {
           return (
             <div key={index} className={styles.contentTask}>
@@ -37,15 +49,15 @@ export function TodoList() {
                 <p>{task}</p>
               </div>
 
-              <button title="Deletar tarefa">
+              <button onClick={() => deleteTask(task)} title="Deletar tarefa">
                 <Trash size={24} />
               </button>
             </div>
           );
         }) :
           <div className={styles.contentTaskEmpty}>
-            <ClipboardText size={32} />
-            <p>{`Não há tarefas para serem realizdas.`}</p>
+            <ClipboardText size={46} />
+            <p>{`Não há tarefas para serem realizadas.`}</p>
           </div>
         }
       </div>
