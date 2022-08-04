@@ -85,6 +85,10 @@
   font-weight: 700;
 }
 
+.contentInfo p.concluded {
+  text-decoration: line-through;
+}
+
 .contentTask + .contentTask {
   margin-top: 1rem;
 }

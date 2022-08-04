@@ -1,24 +1,61 @@
 import { Trash, PlusCircle, ClipboardText } from "phosphor-react";
 import { ChangeEvent, useState } from "react";
+import { v4 as uuidv4 } from 'uuid';
 
 import styles from "./TodoList.module.css";
 
+interface TaskProps {
+  id: string;
+  name: string;
+  status: boolean;
+}
+
 export function TodoList() {
-  const [listTasks, setListTasks] = useState<string[]>([]);
-  const [newTask, setNewTask] = useState('');
+  const [listTasks, setListTasks] = useState<TaskProps[]>([]);
+  const [newTask, setNewTask] = useState<TaskProps>({
+    id: '',
+    name: '',
+    status: false}
+  );
 
   function handleCreateNewTask() {
     setListTasks([...listTasks, newTask]);
-    setNewTask('');
+    setNewTask({
+      id: '',
+      name: '',
+      status: false
+    });
   }
   
   function handleNewTask(event: ChangeEvent<HTMLInputElement>) {
-    setNewTask(event.target.value);
+    const nameTask = event.target.value;
+
+    setNewTask({
+      id: uuidv4(),
+      name: nameTask,
+      status: false
+    });
+  }
+
+  function toggleStatus(idTask: string) {
+    const newListTasks = listTasks.map(task => {
+      if(idTask === task.id) {
+        return {
+          id: task.id,
+          name: task.name,
+          status: !task.status
+        }
+      }
+
+      return task;
+    });
+
+    setListTasks(newListTasks);
   }
 
   function deleteTask(taskToDelete: string) {
     const tasksWithoutDeleteOne = listTasks.filter(task => {
-      return task !== taskToDelete;
+      return task.id !== taskToDelete;
     });
 
     setListTasks(tasksWithoutDeleteOne);
@@ -27,7 +64,7 @@ export function TodoList() {
   return (
     <div className={styles.container}>
       <div className={styles.newTask}>
-        <input type="text" onChange={handleNewTask} value={newTask}/>
+        <input type="text" onChange={handleNewTask} value={newTask?.name}/>
 
         <button onClick={handleCreateNewTask}>
           Nova tarefa
@@ -40,16 +77,16 @@ export function TodoList() {
           <p>Total de tarefas<span>{listTasks.length}</span></p>
           <p>Tarefas realizadas<span>{` 2 / ${listTasks.length}`}</span></p>
         </header>
-        {listTasks.length !== 0 ? listTasks.map((task, index) => {
+        {listTasks.length !== 0 ? listTasks.map(task => {
           return (
-            <div key={index} className={styles.contentTask}>
+            <div key={task.id} className={styles.contentTask}>
               <div className={styles.contentInfo} >
-                <input type="checkbox" name="task" />
+                <input type="checkbox" onChange={() => toggleStatus(task.id)} name="task" />
                 
-                <p>{task}</p>
+                <p className={task.status ? `${styles.concluded}` : ''}>{task.name}</p>
               </div>
 
-              <button onClick={() => deleteTask(task)} title="Deletar tarefa">
+              <button onClick={() => deleteTask(task.id)} title="Deletar tarefa">
                 <Trash size={24} />
               </button>
             </div>
